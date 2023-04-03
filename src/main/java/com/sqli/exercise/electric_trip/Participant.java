@@ -1,12 +1,14 @@
 package com.sqli.exercise.electric_trip;
 
 public class Participant {
+
     private int id;
+
     private String location;
 
     private int batterySize;
 
-    private int consume;
+    private int consume=0;
 
     private int lowSpeedPerformance;
 

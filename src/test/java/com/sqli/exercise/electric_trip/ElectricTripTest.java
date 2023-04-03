@@ -29,7 +29,7 @@ public class ElectricTripTest {
         assertThat(trip.locationOf(participantId), is("BOURGES"));
         assertThat(trip.chargeOf(participantId), is("53%")); //% is rounded to closest integer
     }
-/*
+
     @Test
     public void shouldGoToFinalDestination() {
         ElectricTrip trip = new ElectricTrip("PARIS-250-LIMOGES-100-BORDEAUX");
@@ -50,7 +50,7 @@ public class ElectricTripTest {
         assertThat(trip.locationOf(participantId), is("LIMOGES"));
         assertThat(trip.chargeOf(participantId), is("41%"));
     }
-
+/*
     @Test
     public void shouldConsumeMoreWhenSprinting() {
         ElectricTrip trip = new ElectricTrip("PARIS-250-LIMOGES-100-BORDEAUX");
