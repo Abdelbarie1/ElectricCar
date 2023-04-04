@@ -1,25 +1,42 @@
 package com.sqli.exercise.electric_trip;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Participant {
 
     private int id;
 
+    private String startCityName;
+
     private String location;
 
-    private int batterySize;
+    private double batterySize;
 
-    private int consume=0;
+    private double consume=0;
 
     private int lowSpeedPerformance;
 
     private int highSpeedPerformance;
 
-    public Participant(int id, String startCityName, int batterySize, int lowSpeedPerformance, int highSpeedPerformance) {
+    private List<Path> paths=new ArrayList<>();
+
+    public List<Path> getPaths() {
+        return paths;
+    }
+
+    public String getStartCityName() {
+        return startCityName;
+    }
+
+    public Participant(int id, String startCityName, int batterySize, int lowSpeedPerformance, int highSpeedPerformance,List<Path> paths) {
         this.id = id;
-        this.location = startCityName;
+        this.startCityName = startCityName;
         this.batterySize = batterySize;
         this.lowSpeedPerformance = lowSpeedPerformance;
         this.highSpeedPerformance = highSpeedPerformance;
+        this.paths=paths;
     }
 
 
@@ -32,7 +49,7 @@ public class Participant {
         return location;
     }
 
-    public int getBatterySize() {
+    public double getBatterySize() {
         return batterySize;
     }
 
@@ -44,11 +61,11 @@ public class Participant {
         return highSpeedPerformance;
     }
 
-    public int getConsume() {
+    public double getConsume() {
         return consume;
     }
 
-    public void setConsume(int consume) {
+    public void setConsume(double consume) {
         this.consume = consume;
     }
 

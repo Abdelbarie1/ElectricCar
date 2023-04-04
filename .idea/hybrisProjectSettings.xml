@@ -3,6 +3,11 @@
   <component name="HybrisProjectSettings">
     <option name="moduleSettings">
       <map>
+        <entry key="ElectricCar">
+          <value>
+            <ModuleSettings />
+          </value>
+        </entry>
         <entry key="electric-trip">
           <value>
             <ModuleSettings />
