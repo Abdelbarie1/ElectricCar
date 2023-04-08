@@ -10,10 +10,11 @@ public class Participant {
 
     private String startCityName;
 
-    private String location;
+    private City location=new City();
 
     private double batterySize;
 
+    private double charge;
     private double consume=0;
 
     private int lowSpeedPerformance;
@@ -45,7 +46,7 @@ public class Participant {
         return id;
     }
 
-    public String getLocation() {
+    public City getLocation() {
         return location;
     }
 
@@ -69,7 +70,15 @@ public class Participant {
         this.consume = consume;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(City location) {
         this.location = location;
+    }
+
+    public void setCharge(double charge) {
+        this.charge = charge;
+    }
+
+    public double getCharge() {
+        return charge;
     }
 }

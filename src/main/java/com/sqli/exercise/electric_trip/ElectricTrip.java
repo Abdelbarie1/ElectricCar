@@ -1,7 +1,11 @@
 package com.sqli.exercise.electric_trip;
 
+
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ElectricTrip {
 
@@ -22,12 +26,28 @@ public class ElectricTrip {
 			indexBeginPath+=2;
 		}
 		List<Path> paths1=new ArrayList<>();
-
 		for( int count=indexBeginPath;count<pathDescSeparated.length-1;count+=2) {
-			Path path=new Path(pathDescSeparated[count],Integer.parseInt(pathDescSeparated[count+1]),pathDescSeparated[count+2]);
+			City startLocation=new City();
+			City endLocation=new City();
+			if(pathDescSeparated[count].split(":").length>1){
+				startLocation.setCityName(pathDescSeparated[count].split(":")[0]);
+				startLocation.setKwhChargedPerHour(Double.parseDouble(pathDescSeparated[count].split(":")[1]));
+				startLocation.setChargePlace(true);
+			}else {
+				startLocation.setCityName(pathDescSeparated[count]);
+			}
+			if(pathDescSeparated[count+2].split(":").length>1){
+				endLocation.setCityName(pathDescSeparated[count+2].split(":")[0]);
+				endLocation.setKwhChargedPerHour(Double.parseDouble(pathDescSeparated[count+2].split(":")[1]));
+				endLocation.setChargePlace(true);
+			}else {
+				endLocation.setCityName(pathDescSeparated[count+2]);
+			}
+			Path path=new Path(startLocation,Integer.parseInt(pathDescSeparated[count+1]),endLocation);
 			paths1.add(path);
 		}
 		Participant participant=new Participant(this.participants.size()+1,startCityName,batterySize,lowSpeedPerformance,highSpeedPerformance,paths1);
+		participant.setCharge(participant.getBatterySize());
 		this.participants.add(participant);
 		return participant.getId();
 	}
@@ -36,29 +56,35 @@ public class ElectricTrip {
 		Participant participantLookingFor= (Participant) this.participants.stream().filter(participant -> participant.getId()==participantId).findFirst().get();
 		List<Path> paths=participantLookingFor.getPaths();
 		for (int count = 0; count < paths.size(); count++) {
-				double availableCharge = participantLookingFor.getBatterySize() - participantLookingFor.getConsume();
-				if (isEnoughtCharge(paths.get(count), availableCharge, participantLookingFor.getLowSpeedPerformance())) {
-
+				if (isEnoughtCharge(paths.get(count), participantLookingFor.getCharge(), participantLookingFor.getLowSpeedPerformance())) {
 					consome(participantLookingFor, paths.get(count), participantLookingFor.getLowSpeedPerformance());
 					participantLookingFor.setLocation(paths.get(count).getArriveLocation());
 				}
 
-			}
-			System.out.println("Available Consume is : " + participantLookingFor.getConsume());
-
 		}
+	}
 
 
 	public void consome(Participant participant,Path path, int speed){
-		participant.setConsume(participant.getConsume()+(path.getDistance()/speed));
+		//participant.setConsume(participant.getConsume()+(path.getDistance()/speed));
+		participant.setCharge(participant.getCharge()-path.getDistance()/speed);
 	}
 
 	public void sprint(int participantId) {
 		Participant participantLookingFor= (Participant) this.participants.stream().filter(participant -> participant.getId()==participantId).findFirst().get();
 		List<Path> paths=participantLookingFor.getPaths();
-		for(int count=0;count<paths.size();count++){
-			double availableCharge=participantLookingFor.getBatterySize()-participantLookingFor.getConsume();
-			if(isEnoughtCharge(paths.get(count),availableCharge,participantLookingFor.getHighSpeedPerformance())){
+		int indexBeginPath=0;
+		String startCityName=participantLookingFor.getLocation().getCityName();
+		if(!StringUtils.equals(startCityName,"NAN")){
+			while (!StringUtils.equals(startCityName
+					,participantLookingFor.getPaths().get(indexBeginPath).getStartLocation().getCityName())
+					&& indexBeginPath<participantLookingFor.getPaths().size()-1){
+				indexBeginPath++;
+			}
+		}
+
+		for(int count=indexBeginPath;count<paths.size();count++){
+			if(isEnoughtCharge(paths.get(count),participantLookingFor.getCharge(),participantLookingFor.getHighSpeedPerformance())){
 				consome(participantLookingFor,paths.get(count),participantLookingFor.getHighSpeedPerformance());
 				participantLookingFor.setLocation(paths.get(count).getArriveLocation());
 			}
@@ -67,16 +93,21 @@ public class ElectricTrip {
 
 	public String locationOf(int participantId) {
 		Participant participantLookingFor= (Participant) this.participants.stream().filter(participant -> participant.getId()==participantId).findFirst().get();
-		return participantLookingFor.getLocation();
+		return participantLookingFor.getLocation().getCityName();
 	}
 
 	public String chargeOf(int participantId) {
 		Participant participantLookingFor= (Participant) this.participants.stream().filter(participant -> participant.getId()==participantId).findFirst().get();
-		return  (int)Math.round(100-((participantLookingFor.getConsume()/participantLookingFor.getBatterySize())*100))+"%";
+		return  (int)Math.round(((participantLookingFor.getCharge()/participantLookingFor.getBatterySize())*100))+"%";
 	}
 	
 	public void charge(int participantId, int hoursOfCharge) {
-    	throw new UnsupportedOperationException("Still to be implemented");
+		Participant participantLookingFor= (Participant) this.participants.stream().filter(participant -> participant.getId()==participantId).findFirst().get();
+		if(participantLookingFor.getLocation().isChargePlace()){
+			participantLookingFor.setCharge(participantLookingFor.getCharge()+(hoursOfCharge*participantLookingFor.getLocation().getKwhChargedPerHour()));
+			System.out.println(participantLookingFor.getCharge());
+		}
+		System.out.println(participantLookingFor.getCharge());
 	}
 
 	public  boolean isEnoughtCharge(Path path,double charge ,int speed){

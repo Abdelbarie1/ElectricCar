@@ -2,21 +2,21 @@ package com.sqli.exercise.electric_trip;
 
 public class Path {
 
-    private String startLocation;
-    private  String arriveLocation;
+    private City startLocation;
+    private  City arriveLocation;
     private int distance;
 
-    public Path(String startLocation, int distance , String arriveLocation) {
+    public Path(City startLocation, int distance , City arriveLocation) {
         this.startLocation = startLocation;
         this.arriveLocation = arriveLocation;
         this.distance = distance;
     }
 
-    public String getStartLocation() {
+    public City getStartLocation() {
         return startLocation;
     }
 
-    public String getArriveLocation() {
+    public City getArriveLocation() {
         return arriveLocation;
     }
 

@@ -72,7 +72,7 @@ public class ElectricTripTest {
         assertThat(trip.locationOf(id2), is("BORDEAUX"));
         assertThat(trip.chargeOf(id2),is("71%"));
     }
-/*
+
     @Test
     public void shouldAllowCharging() {
         ElectricTrip trip = new ElectricTrip("PARIS-250-LIMOGES:25-100-BORDEAUX"); //25 is the KWh charged per hour of charge time at Limoges
@@ -86,7 +86,7 @@ public class ElectricTripTest {
         assertThat(trip.locationOf(id), is("BORDEAUX"));
         assertThat(trip.chargeOf(id), is("52%"));
     }
-
+/*
     @Test
     public void shouldNotChargeIfNoChargingAtLocation() {
         ElectricTrip trip = new ElectricTrip("LIMOGES:25-100-BORDEAUX-400-MARSEILLES");
