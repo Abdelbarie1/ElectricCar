@@ -15,8 +15,6 @@ public class Participant {
     private double batterySize;
 
     private double charge;
-    private double consume=0;
-
     private int lowSpeedPerformance;
 
     private int highSpeedPerformance;
@@ -40,8 +38,6 @@ public class Participant {
         this.paths=paths;
     }
 
-
-
     public int getId() {
         return id;
     }
@@ -60,14 +56,6 @@ public class Participant {
 
     public int getHighSpeedPerformance() {
         return highSpeedPerformance;
-    }
-
-    public double getConsume() {
-        return consume;
-    }
-
-    public void setConsume(double consume) {
-        this.consume = consume;
     }
 
     public void setLocation(City location) {
